@@ -54,8 +54,8 @@ body {
 }
 
 .card:hover {
-  transform: translateY(0);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  transform: translateY(-8px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.52);
 }
 
 .card img {
