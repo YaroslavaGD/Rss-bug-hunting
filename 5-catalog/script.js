@@ -10,8 +10,8 @@ const products = [
 ];
 
 const searchInput = document.getElementById("search");
-const categorySelect = document.getElementById("category");
-const sortSelect = document.getElementById("sort");
+const categorySelect = document.getElementById("category"); // value = all | phone | laptop | audio
+const sortSelect = document.getElementById("sort"); // value = default | asc | desc
 const resetBtn = document.getElementById("reset");
 const grid = document.getElementById("grid");
 const countEl = document.getElementById("count");
@@ -59,6 +59,9 @@ sortSelect.addEventListener("change", render);
 
 resetBtn.addEventListener("click", () => {
   searchInput.value = "";
+  categorySelect.value = "all";
+  sortSelect.value = "default";
+  render();
 });
 
 render();
