@@ -16,6 +16,14 @@ let tasks = [];
 let currentFilter = FILTER_DATASET.ALL; //all | active | done
 let nextId = 1;
 
+function getActiveTasks() {
+  return tasks.filter((t) => !t.done);
+}
+
+function getCompletedTasks() {
+  return tasks.filter((t) => t.done);
+}
+
 function addTask() {
   const text = input.value;
   errorEl.setAttribute("hidden", "");
@@ -46,14 +54,14 @@ function clearCompleted() {
 }
 
 function getVisibleTasks() {
-  if (currentFilter === FILTER_DATASET.ACTIVE) return tasks.filter((t) => !t.done);
-  if (currentFilter === FILTER_DATASET.DONE) return tasks.filter((t) => t.done);
+  if (currentFilter === FILTER_DATASET.ACTIVE) return getActiveTasks();
+  if (currentFilter === FILTER_DATASET.DONE) return getCompletedTasks();
 
   return tasks;
 }
 
 function updateCounter() {
-  counter.textContent = "Активных задач: " + tasks.filter((t) => !t.done).length;
+  counter.textContent = "Активных задач: " + getActiveTasks().length;
 }
 
 function render() {
