@@ -6,8 +6,14 @@ const errorEl = document.getElementById("error");
 const clearBtn = document.getElementById("clear-completed");
 const filterButtons = document.querySelectorAll(".filter");
 
+const FILTER_DATASET = {
+  ALL: 'all',
+  ACTIVE: 'active',
+  DONE: 'done'
+};
+
 let tasks = [];
-let currentFilter = "all";
+let currentFilter = FILTER_DATASET.ALL; //all | active | done
 let nextId = 1;
 
 function addTask() {
@@ -40,6 +46,9 @@ function clearCompleted() {
 }
 
 function getVisibleTasks() {
+  if (currentFilter === FILTER_DATASET.ACTIVE) return tasks.filter((t) => !t.done);
+  if (currentFilter === FILTER_DATASET.DONE) return tasks.filter((t) => t.done);
+
   return tasks;
 }
 
