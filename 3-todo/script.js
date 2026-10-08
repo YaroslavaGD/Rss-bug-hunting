@@ -12,7 +12,12 @@ let nextId = 1;
 
 function addTask() {
   const text = input.value;
-  errorEl.hidden = true;
+  errorEl.setAttribute("hidden", "");
+
+  if (!text || text.trim() === "") {
+    errorEl.removeAttribute("hidden");
+    return;
+  }
   tasks.push({ id: nextId++, text: text, done: false });
   input.value = "";
   render();
