@@ -49,7 +49,7 @@ function deleteTask(id) {
 }
 
 function clearCompleted() {
-  tasks = [];
+  tasks = getActiveTasks();
   render();
 }
 
