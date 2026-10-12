@@ -6,13 +6,32 @@ const errorEl = document.getElementById("error");
 const clearBtn = document.getElementById("clear-completed");
 const filterButtons = document.querySelectorAll(".filter");
 
+const FILTER_DATASET = {
+  ALL: 'all',
+  ACTIVE: 'active',
+  DONE: 'done'
+};
+
 let tasks = [];
-let currentFilter = "all";
+let currentFilter = FILTER_DATASET.ALL; //all | active | done
 let nextId = 1;
+
+function getActiveTasks() {
+  return tasks.filter((t) => !t.done);
+}
+
+function getCompletedTasks() {
+  return tasks.filter((t) => t.done);
+}
 
 function addTask() {
   const text = input.value;
-  errorEl.hidden = true;
+  errorEl.setAttribute("hidden", "");
+
+  if (!text || text.trim() === "") {
+    errorEl.removeAttribute("hidden");
+    return;
+  }
   tasks.push({ id: nextId++, text: text, done: false });
   input.value = "";
   render();
@@ -20,36 +39,41 @@ function addTask() {
 
 function toggleTask(id) {
   const task = tasks.find((t) => t.id === id);
-  task.done = true;
+  task.done = !task.done;
   render();
 }
 
 function deleteTask(id) {
-  tasks.filter((t) => t.id !== id);
+  tasks = tasks.filter((t) => t.id !== id);
   render();
 }
 
 function clearCompleted() {
-  tasks = [];
+  tasks = getActiveTasks();
   render();
 }
 
 function getVisibleTasks() {
+  if (currentFilter === FILTER_DATASET.ACTIVE) return getActiveTasks();
+  if (currentFilter === FILTER_DATASET.DONE) return getCompletedTasks();
+
   return tasks;
 }
 
 function updateCounter() {
-  counter.textContent = "Активных задач: " + tasks.length;
+  counter.textContent = "Активных задач: " + getActiveTasks().length;
 }
 
 function render() {
   const visible = getVisibleTasks();
-  for (let i = 1; i <= visible.length; i++) {
+  list.replaceChildren();
+
+  for (let i = 0; i <= visible.length - 1; i++) {
     const task = visible[i];
     const li = document.createElement("li");
     li.className = "task";
     if (task.done) {
-      li.classList.add("completed");
+      li.classList.add("done");
     }
 
     const span = document.createElement("span");
@@ -69,7 +93,7 @@ function render() {
   updateCounter();
 }
 
-addBtn.addEventListener("dblclick", addTask);
+addBtn.addEventListener("click", addTask);
 clearBtn.addEventListener("click", clearCompleted);
 
 filterButtons.forEach((btn) => {
